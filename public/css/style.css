@@ -1,0 +1,141 @@
+body{
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+/* Navbar */
+.navbar {
+    height: 5rem;
+    background-color: white;
+}
+.navbar-brand{
+    color: #fe424d;
+}
+.fa-airbnb {
+    color: #fe424d;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.nav-link{
+    color: #222222 !important;
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+.nav-link:hover{
+    color: #fe424d !important;
+}
+
+/* Footer */
+.f-info {
+    text-align: center;
+    height: 8rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #ebebeb;
+    padding: 1rem;
+}
+
+.f-info-links,
+.f-info-social, .f-info-brand {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+}
+
+.f-info-social i {
+    margin-right: 1rem;
+    font-size: 1.3rem;
+    color: #222222;
+}
+
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+    margin: 0 0.5rem;
+}
+
+.f-info-links a:hover {
+    color: #fe424d;
+    text-decoration: underline;
+}
+
+/* Cards */
+
+.card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+.card-img-top{
+    height: 20rem;
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover;
+}
+
+.card-body{
+    padding: 0 !important;
+}
+
+p.card-text{
+    font-weight: 400 !important;
+}
+
+.listing-link {
+    text-decoration: none !important;
+}
+
+/* Card Effects */
+
+.card-img-overlay{
+    opacity: 0 !important;
+}
+
+.card-img-overlay:hover {
+    opacity: 0.2 !important;
+    background-color: white !important;
+    transition: all 0.3s ease-in-out !important;
+    border-radius: 1rem !important;
+}
+
+/* New page & Edit page */
+
+.add-btn, .edit-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+    color: white !important;
+}
+.add-btn:hover, .edit-btn:hover{
+    background-color: #fe424d !important;
+    color: white !important;
+    opacity: 0.8 !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* show Page */
+
+.show-img {
+    height: 30vh !important;
+}
+
+.btns{
+    display: flex;
+}
+
+.show-card{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+

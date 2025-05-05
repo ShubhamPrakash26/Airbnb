@@ -1,0 +1,52 @@
+<% layout("/layouts/boilerplate") -%>
+<div class="row">
+    <div class="col-8 offset-2">
+        <br>
+        <h3>Create a new Listing</h3>
+        <form action="/listings" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="listing[title]" placeholder="Enter Title" class="form-control" required minlength="3" maxlength="50">
+                <div class="invalid-feedback">
+                    Enter a title
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="listing[description]" placeholder="Enter description" class="form-control" required minlength="10" maxlength="500"></textarea>
+                <div class="invalid-feedback">
+                    Enter a description
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" name="listing[price]" placeholder="Enter Price" class="form-control" required min="399" step="0.01" max="999999.99">
+                    <div class="invalid-feedback">
+                        Price can not be less than 399
+                    </div>
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="country" class="form-label">Country</label>
+                    <input type="text" name="listing[country]" placeholder="Enter country" class="form-control" required maxlength="50">
+                    <div class="invalid-feedback">
+                        Enter a valid country
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image URL</label>
+                <input type="text" name="listing[image]" placeholder="Enter image URL" class="form-control" pattern="https?://.+\.(jpg|jpeg|png|gif)">
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="listing[location]" placeholder="Enter Location" class="form-control" required maxlength="50">
+                <div class="invalid-feedback">
+                    Enter a location
+                </div>
+            </div>
+            <button type="submit" class="btn btn-dark add-btn"> Add Listing </button>
+            <br><br>
+        </form>
+    </div>
+</div>

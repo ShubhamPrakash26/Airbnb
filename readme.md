@@ -81,6 +81,12 @@ The `Listing` model has the following fields:
 - Method Override for HTTP verbs
 - Custom error handling utilities
 
+## Future Features
+
+- Authentication 
+- Security Features
+- Deployment
+
 ---
 
 This README provides a comprehensive overview of the Airbnb clone project structure, API routes, and data model to help you understand and build upon the existing codebase.

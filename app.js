@@ -7,6 +7,7 @@ const Listing = require('./models/listing.js');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/ExpressError.js');
+const {listingSchema} = require('./schema.js');
 
 const PORT = 8080;
 const app = express();
@@ -14,7 +15,7 @@ const app = express();
 const MONGOURI = "mongodb://127.0.0.1:27017/airbnb"; 
 
 async function main() {
-    await mongoose.connect(MONGOURI);
+    await mongoose.connect(MONGOURI); 
 }
 
 main().then(() => {
@@ -31,10 +32,21 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
+app.use(express.json());
 
 app.get("/", (req,res) =>{
     res.send("Hello World");
 })
+
+const validateListing = (req,res,next) => {
+    let {error} = listingSchema.validate(req.body);
+    if(error) {
+        let errorMessage = error.details.map((el) => el.message).join(", ");
+        throw new ExpressError(400, errorMessage);
+    } else {
+        next();
+    }
+}
 
 //Index Route
 app.get("/listings",  wrapAsync(async (req, res) => {
@@ -48,15 +60,14 @@ app.get("/listings/new", (req, res) => {
 })
 
 //Create Listing Route
-app.post("/listings", wrapAsync(async (req,res, next) => {
-    const listing = req.body.listing;
-    const newListing = new Listing(listing);
+app.post("/listings", validateListing, wrapAsync(async (req, res, next) => {
+    const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
 }));
 
 //Update Listing Route
-app.put("/listings/:id",  wrapAsync(async (req, res) => {
+app.put("/listings/:id", validateListing, wrapAsync(async (req, res) => {
     let id = req.params.id;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
     res.redirect(`/listings/${id}`);
@@ -85,10 +96,6 @@ app.delete("/listings/:id",  wrapAsync(async (req, res) => {
     res.redirect("/listings");
 }));
 
-//Error Route
-app.get("/error", (req, res) => {
-    res.render("error.ejs");
-})
 
 //404 Error Handler
 app.use((req, res, next) => {
@@ -98,8 +105,9 @@ app.use((req, res, next) => {
 
 //Error Handler
 app.use((err, req, res, next) => {
-    let {statusCode=500, message="Something went wrong"} = err;
-    res.status(statusCode).send(message);
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = "Something went wrong"; 
+    res.status(statusCode).render('error.ejs', { err });
 });
 
 app.listen(PORT, () => {

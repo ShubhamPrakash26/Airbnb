@@ -92,6 +92,7 @@ app.get("/error", (req, res) => {
 
 //404 Error Handler
 app.use((req, res, next) => {
+    console.log("404 Error");
     next(new ExpressError(404, "Page Not Found!"));
 });
 

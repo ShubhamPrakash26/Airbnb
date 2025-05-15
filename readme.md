@@ -122,5 +122,3 @@ The `Listing` model defines the following fields:
 5. Open a Pull Request
 
 ---
-
-This README provides a comprehensive overview of the Airbnb clone project structure, API routes, and data model to help you understand and build upon the existing codebase.

@@ -108,7 +108,7 @@ The `Listing` model defines the following fields:
    npm install
    ```
 3. Set up MongoDB connection
-4. Run the application
+4. Run the app
    ```
    npm start
    ```

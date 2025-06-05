@@ -1,13 +1,12 @@
 <% layout("/layouts/boilerplate") -%>
 <div class="row mt-2">
     <div class="col-8 offset-3">
-        <h3>Listing Details </h3>
+        <h3><%= listing.title %> </h3>
     </div>
-    <div class="card col-6 offset-3 show-card">
+    <div class="card col-6 offset-3 show-card listing-card">
         <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing_image">
         <div class="card-body">
             <p class="card-text">
-                <b><%= listing.title %></b><br />
                 <%= listing.description %><br />
                 <b>Price:</b> &#8377;<%= listing.price.toLocaleString("en-IN") %><br />
                 <b>Location:</b> <%= listing.location %><br />
@@ -16,12 +15,79 @@
         </div>
     </div>
     <br />
-</div>
 
-<div class="btns">
-    <a href="/listings/<%= listing._id %>/edit" class="btn btn-danger col-1 offset-3">Edit</a>
+    <div class="btns">
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-danger col-1 offset-3">Edit</a>
 
-    <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
-        <button type="submit" class="btn btn-dark offset-6 w-450">Delete</button>
-    </form>
+        <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
+            <button type="submit" class="btn btn-dark offset-6 w-450">Delete</button>
+        </form>
+    </div>
+    <div class="col-8 offset-3 mb-3">
+        <hr>
+        <h4>Leave a review</h4>
+        <form action="/listings/<%= listing._id %>/reviews" class="needs-validation" method="post" novalidate>
+            <div class="mb-3 mt-3" >
+                <label for="rating" class="form-label"> Rating </label>
+                <input type="range" min="1" max="5" class="form-range" id="rating" name="review[rating]">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="comment">Comments</label>
+                <input type="text" name="review[comment]" id="comment" class="form-control" placeholder="Write your review here..." required>
+                <div class="invalid-feedback">
+                    Comment can't be empty.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-dark mt-2">
+                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                Submit
+            </button>
+        </form>
+        <br><br>
+        <!-- Reviews -->
+        <hr>
+        <h4 class="mb-4">All Reviews</h4>
+        <div class="row">
+            <% if (listing.reviews.length === 0) { %>
+                <div class="col-12">
+                    <p class="text-muted">No reviews yet.</p>
+                </div>
+            <% } %>
+
+            <% for (let review of listing.reviews) { %>
+                <div class="col-md-5 mb-4 ms-md-3">
+                    <div class="card shadow-sm border-0 rounded-4 p-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <!-- Avatar Placeholder -->
+                            <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px; font-size: 18px;">
+                                JD
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">John Doe</h6>
+                                <small class="text-muted">Posted on: <%= new Date(review.createdAt).toLocaleDateString() %></small>
+                            </div>
+                        </div>
+                        <p class="mb-2"><%= review.comment %></p>
+                        <div class="d-flex align-items-center">
+                            <!-- Star Rating -->
+                            <div>
+                                <% for (let i = 0; i < review.rating; i++) { %>
+                                    <i class="fa fa-star text-warning" aria-hidden="true"></i>
+                                <% } %>
+                                <% for (let i = review.rating; i < 5; i++) { %>
+                                    <i class="fa fa-star text-muted" aria-hidden="true"></i>
+                                <% } %>
+                            </div>
+                            <span class="badge bg-light text-dark border ms-2">Rating: <%= review.rating %></span>
+                        </div>
+                        <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="post" class="mb-3 mt-2">
+                            <button type="submit" class="btn btn-dark btn-sm mt-2">
+                                <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
 </div>

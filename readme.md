@@ -4,7 +4,7 @@
 
 This project is an Airbnb clone built using Node.js, Express, MongoDB, and EJS templating. It allows users to create, view, update, and delete property listings similar to Airbnb. The application connects to a MongoDB database to store listing data and uses EJS for server-side rendering of views. The project serves static assets such as CSS and JavaScript from the public directory.
 
-## Folder Structure
+## Folder Structure Backend
 
 ```
 airbnb-clone/
@@ -108,7 +108,7 @@ The `Listing` model defines the following fields:
    npm install
    ```
 3. Set up MongoDB connection
-4. Run the application
+4. Run the app
    ```
    npm start
    ```
@@ -122,5 +122,3 @@ The `Listing` model defines the following fields:
 5. Open a Pull Request
 
 ---
-
-This README provides a comprehensive overview of the Airbnb clone project structure, API routes, and data model to help you understand and build upon the existing codebase.

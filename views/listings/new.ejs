@@ -35,6 +35,29 @@
                 </div>
             </div>
             <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select name="listing[category]" class="form-select" required>
+                    <option value="trending" selected>Trending</option>
+                    <option value="rooms">Rooms</option>
+                    <option value="food">Food</option>
+                    <option value="beach">Beach</option>
+                    <option value="mountains">Mountains</option>
+                    <option value="city">City</option>
+                    <option value="forest">Forest</option>
+                    <option value="snow">Snow</option>
+                    <option value="water">Water</option>
+                    <option value="airports">Airports</option>
+                    <option value="cars">Cars</option>
+                    <option value="bikes">Bikes</option>
+                    <option value="buses">Buses</option>
+                    <option value="trains">Trains</option>
+                    <option value="space">Space</option>
+                    <option value="love">Love</option>
+                    <option value="groups">Groups</option>
+                </select>
+                <div class="invalid-feedback">Please select a category</div>
+            </div>
+            <div class="mb-3">
                 <label for="image" class="form-label">Upload Image</label>
                 <input type="file" name="listing[image]" class="form-control" required>
             </div>

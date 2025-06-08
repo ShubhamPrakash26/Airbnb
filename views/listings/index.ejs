@@ -1,16 +1,111 @@
 <% layout("/layouts/boilerplate") -%>
-<h2>Listings</h2>
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-1">
+
+<style>
+    #filters {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1rem 2rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 1rem;
+    }
+    #filters::-webkit-scrollbar {
+        display: none;
+    }
+    .filter {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #484848;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s ease;
+        min-width: 60px;
+        text-decoration: none;
+    }
+    .filter:hover {
+        border-bottom: 2px solid #fe424d;
+        background-color: #f7f7f7;
+        border-radius: 0.75rem;
+    }
+    .filter i {
+        font-size: 1.4rem;
+        margin-bottom: 0.4rem;
+        color: #484848;
+    }
+    .filter p {
+        margin: 0;
+        font-size: 0.75rem;
+    }
+    .filter.active {
+        border-bottom: 2px solid #fe424d;
+        color: #fe424d;
+    }
+    @media (max-width: 768px) {
+        #filters {
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+        }
+        .filter {
+            font-size: 0.75rem;
+        }
+        .filter i {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<% const categories = [
+    { name: 'trending', icon: 'fa-fire' },
+    { name: 'rooms', icon: 'fa-bed' },
+    { name: 'food', icon: 'fa-utensils' },
+    { name: 'beach', icon: 'fa-umbrella-beach' },
+    { name: 'mountains', icon: 'fa-mountain' },
+    { name: 'city', icon: 'fa-city' },
+    { name: 'forest', icon: 'fa-tree' },
+    { name: 'snow', icon: 'fa-snowflake' },
+    { name: 'water', icon: 'fa-ship' },
+    { name: 'airports', icon: 'fa-plane' },
+    { name: 'cars', icon: 'fa-car' },
+    { name: 'bikes', icon: 'fa-bicycle' },
+    { name: 'buses', icon: 'fa-bus' },
+    { name: 'trains', icon: 'fa-train' },
+    { name: 'space', icon: 'fa-rocket' },
+    { name: 'love', icon: 'fa-heart' },
+    { name: 'groups', icon: 'fa-people-group' }
+]; %>
+
+<!-- Category Filter Bar -->
+<div id="filters">
+    <% categories.forEach(cat => { %>
+        <a href="/listings?category=<%= cat.name %>" class="filter <%= currentCategory === cat.name ? 'active' : '' %>">
+            <i class="fa-solid <%= cat.icon %>"></i>
+            <p><%= cat.name.charAt(0).toUpperCase() + cat.name.slice(1) %></p>
+        </a>
+    <% }) %>
+    <a href="/listings" class="filter <%= !currentCategory ? 'active' : '' %>">
+        <i class="fa-solid fa-border-all"></i>
+        <p>All</p>
+    </a>
+</div>
+
+<!-- Listings Grid -->
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 mt-3">
     <% for (let listing of allListings) { %>
         <a href="/listings/<%= listing._id %>" class="listing-link col mb-4">
             <div class="card col listing-card">
                 <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing Image">
-                <div class="card-img-overlay">
-                </div>
+                <div class="card-img-overlay"></div>
                 <div class="card-body">
                     <p class="card-text">
-                    <b><%= listing.title %></b> <br />
-                    &#8377;<%= listing.price.toLocaleString("en-IN") %> /night<br />
+                        <b><%= listing.title %></b> <br />
+                        &#8377;<%= listing.price.toLocaleString("en-IN") %> /night<br />
                     </p>
                 </div>
             </div>

@@ -5,7 +5,7 @@ const wrapAsync = require('../utils/wrapAsync.js');
 const {isLoggedIn, isOwner, validateListing} = require('../middleware.js');
 const {index, renderNewForm, showListing, createListing, updateListing, renderEditForm, deleteListing} = require('../controllers/listings.js');
 const multer = require('multer');
-const { cloudinary, storage } = require('../cloudConfig.js'); 
+const { storage } = require('../cloudConfig.js'); 
 const upload = multer({storage}); // Set the destination for uploaded files
 
 router.route('/')
@@ -14,6 +14,12 @@ router.route('/')
 
 //New Listing Route
 router.get("/new", isLoggedIn, renderNewForm);
+
+router.get("/category/:category", wrapAsync(async (req, res) => {
+    const { category } = req.params;
+    const listings = await Listing.find({ category });
+    res.render("listings/index.ejs", { allListings: listings, currentCategory: category });
+}));
 
 router.route('/:id')
     // Show Listing Route

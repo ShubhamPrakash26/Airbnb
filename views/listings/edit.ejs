@@ -33,6 +33,16 @@
                         Enter a valid country
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="listing[category]" class="form-select" required>
+                        <% const categories = ['trending','rooms','food','beach','mountains','city','forest','snow','water','airports','cars','bikes','buses','trains','space','love','groups']; %>
+                        <% categories.forEach(cat => { %>
+                            <option value="<%= cat %>" <%= listing.category === cat ? 'selected' : '' %>><%= cat.charAt(0).toUpperCase() + cat.slice(1) %></option>
+                        <% }) %>
+                    </select>
+                    <div class="invalid-feedback">Please select a category</div>
+                </div>
             </div>
             <div>
                 <label for="image" class="form-label">Current Image: </label><br />

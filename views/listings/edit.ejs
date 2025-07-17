@@ -1,66 +1,213 @@
 <% layout("/layouts/boilerplate") -%>
-<div class="row">
-    <div class="col-8 offset-2">
-        <br>
-        <h3>Edit your Listing</h3>
-        <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" name="listing[title]" value="<%= listing.title %>" class="form-control" required minlength="3" maxlength="50">
-                <div class="invalid-feedback">
-                    Enter a title
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="listing[description]" class="form-control" required minlength="10" maxlength="500"><%= listing.description %></textarea>
-                <div class="invalid-feedback">
-                    Enter a description
-                </div>
-            </div>
-            <div class="row">
-                <div class="mb-3 col-md-4">
-                    <label for="price" class="form-label">Price</label>
-                    <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control" required min="399" step="0.01" max="999999.99">
-                    <div class="invalid-feedback">
-                        Price can not be less than 399
+
+<style>
+    .form-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .form-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--airbnb-black);
+    }
+    .form-label {
+        font-weight: 600;
+        color: var(--airbnb-black);
+        margin-bottom: 0.5rem;
+    }
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: var(--airbnb-red);
+        box-shadow: 0 0 0 0.25rem rgba(255,56,92,0.15);
+    }
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+    }
+    .btn-submit {
+        background-color: var(--airbnb-red) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-weight: 600 !important;
+        transition: all 0.2s ease !important;
+    }
+    .btn-submit:hover {
+        opacity: 0.9 !important;
+        transform: translateY(-1px) !important;
+    }
+    .img-preview {
+        max-height: 200px;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+    .dropzone {
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .dropzone:hover {
+        border-color: var(--airbnb-red);
+        background: rgba(255,56,92,0.05);
+    }
+    .dropzone i {
+        font-size: 2rem;
+        color: var(--airbnb-red);
+        margin-bottom: 0.5rem;
+    }
+    @media (max-width: 768px) {
+        .form-card {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="form-card">
+                <h2 class="form-title">Edit your listing</h2>
+                <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="listing[title]" value="<%= listing.title %>" class="form-control" required minlength="3" maxlength="50">
+                        <div class="invalid-feedback">Enter a title</div>
                     </div>
-                </div>
-                <div class="mb-3 col-md-8">
-                    <label for="country" class="form-label">Country</label>
-                    <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control" required maxlength="50">
-                    <div class="invalid-feedback">
-                        Enter a valid country
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="listing[description]" class="form-control" required minlength="10" maxlength="500"><%= listing.description %></textarea>
+                        <div class="invalid-feedback">Enter a description</div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="category" class="form-label">Category</label>
-                    <select name="listing[category]" class="form-select" required>
-                        <% const categories = ['trending','rooms','food','beach','mountains','city','forest','snow','water','airports','cars','bikes','buses','trains','space','love','groups']; %>
-                        <% categories.forEach(cat => { %>
-                            <option value="<%= cat %>" <%= listing.category === cat ? 'selected' : '' %>><%= cat.charAt(0).toUpperCase() + cat.slice(1) %></option>
-                        <% }) %>
-                    </select>
-                    <div class="invalid-feedback">Please select a category</div>
-                </div>
+
+                    <!-- Price & Country -->
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control" required min="399" step="0.01" max="999999.99">
+                            <div class="invalid-feedback">Price cannot be less than 399</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control" required maxlength="50">
+                            <div class="invalid-feedback">Enter a valid country</div>
+                        </div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="listing[category]" class="form-select" required>
+                            <% const categories = ['trending','rooms','food','beach','mountains','city','forest','snow','water','airports','cars','bikes','buses','trains','space','love','groups']; %>
+                            <% categories.forEach(cat => { %>
+                                <option value="<%= cat %>" <%= listing.category === cat ? 'selected' : '' %>><%= cat.charAt(0).toUpperCase() + cat.slice(1) %></option>
+                            <% }) %>
+                        </select>
+                        <div class="invalid-feedback">Please select a category</div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control" required maxlength="50">
+                        <div class="invalid-feedback">Enter a location</div>
+                    </div>
+
+                    <!-- Current Image -->
+                    <div class="mb-3">
+                        <label class="form-label">Current Image</label>
+                        <img src="<%= originalImageUrl %>" class="img-preview" alt="Current listing image">
+                    </div>
+
+                    <!-- New Image -->
+                    <div class="mb-4">
+                        <label for="image" class="form-label">Upload New Image</label>
+                        <div class="dropzone" id="dropzone">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p class="mb-0">Drag & drop your new image here or click to select</p>
+                            <small class="text-muted">JPEG or PNG, max 10MB</small>
+                        </div>
+                        <input type="file" name="listing[image]" id="image" class="d-none">
+                        <img id="imgPreview" class="img-preview" style="display: none;" alt="Preview of new image">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-submit w-100 py-3">
+                        <i class="fas fa-pen me-2"></i> Update Listing
+                    </button>
+                </form>
             </div>
-            <div>
-                <label for="image" class="form-label">Current Image: </label><br />
-                <img src="<%= originalImageUrl %>" width="200" height="200">
-            </div>
-            <div class="mb-3">
-                <label for="image" class="form-label"> Upload New Image</label>
-                <input type="file" name="listing[image]" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="location" class="form-label">Location</label>
-                <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control" required maxlength="50">
-                <div class="invalid-feedback">
-                    Enter a location
-                </div>
-            </div>
-            <button type="submit" class="btn btn-dark edit-btn">Edit Listing</button>
-            <br><br>
-        </form>
+        </div>
     </div>
 </div>
+
+<script>
+    // Image preview and dropzone interaction
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('image');
+    const imgPreview = document.getElementById('imgPreview');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imgPreview.src = e.target.result;
+                imgPreview.style.display = 'block';
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // Drag and drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+        dropzone.classList.add('bg-light');
+    }
+
+    function unhighlight() {
+        dropzone.classList.remove('bg-light');
+    }
+
+    dropzone.addEventListener('drop', function(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        fileInput.files = files;
+        fileInput.dispatchEvent(new Event('change'));
+    });
+</script>

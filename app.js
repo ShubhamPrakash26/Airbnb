@@ -42,6 +42,15 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.json());
 
+
+//zee added code
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path; // THIS MAKES currentPath AVAILABLE
+  res.locals.currentUser = req.user || null; // assuming passport
+  next();
+});
+
+
 //Session Middleware
 const sessionOptions = {
     secret: "mysupersecretkey",
